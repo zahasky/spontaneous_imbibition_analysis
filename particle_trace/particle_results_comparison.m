@@ -1,17 +1,17 @@
 % particle_results_comparison.m
 % Christopher Zahasky
-% 11/6/2019
+% 11/6/2019 updated 5/29/2020
 
 clear all
 close all
 
 % set a few new plot defaults
-set(0,'DefaultAxesFontSize',15, 'defaultlinelinewidth', 2,...
+set(0,'DefaultAxesFontSize',14, 'defaultlinelinewidth', 2,...
     'DefaultAxesTitleFontWeight', 'normal')
 
 % colorbrewer setup for better colors
 % addpath to folder containing colorbrewer scripts and data
-addpath('C:\Users\czahas\Dropbox\Matlab\high_res_images')
+addpath('C:\Users\zahas\Dropbox\Matlab\high_res_images')
 % define colormap, see demo colormap in colorbrewer folder for examples
 % Example of different shades of blue light to dark. To change colormap
 % change 'Blues' to other colorbrewer map. Depending on map choosen you may
@@ -25,17 +25,19 @@ gcc = cbrewer('seq', 'YlOrRd', 9 , 'linear');
 % bluecc = cbrewer('seq', 'Blues', 4 , 'linear');
 
 %% Load perm data
-load('ss_stream_perm_velocity_field_5psi_dp', 'perm_profile_md')
+load('streamtube_perm_field')
 load('100_particles_SS_stream_perm_start_w_diff_2e10_fixed_bc')
 
 % Visual check that velocity vectors appear correct
-figure('position', [133 558  1680 420])
-subplot(1,2,1)
+figure('position', [629   318   818   606])
+subplot(2,1,1)
 gridX = [1:Grid.nx].*Grid.dx - (Grid.dx/2);
 gridY = [1:Grid.ny].*Grid.dy - (Grid.dy/2);
 imagesc([0 10], gridY.*100, perm_profile_md)
 colormap(gray)
-xlabel('Distance from inlet [cm]')
+caxis([15 31])
+% xlabel('Distance from inlet [cm]')
+title('Single phase injection')
 axis equal
 axis tight
 axis([0 10 0 max(Grid.ye).*100])
@@ -57,9 +59,10 @@ end
 
 % Now plot imbibition data
 load('100_imbibe_particles_frame_76_start_rand_dist_w_diff1e12_t150x')
-subplot(1,2,2)
+subplot(2,1,2)
 imagesc([0 10], gridY.*100, perm_profile_md)
 colormap(gray)
+title('Spontaneous imbibition')
 xlabel('Distance from inlet [cm]')
 axis equal
 axis tight
@@ -79,7 +82,10 @@ for i = 1:P.total_particles
     plot(P.xsave(i,ind).*100, P.ysave(i,ind).*100, '.', 'color', gcc(2,:), 'markersize', 12)
     
 end
-            
+
+
 h = colorbar('Position',...
-    [0.916765872829609 0.202380952380952 0.0112103176465811 0.628142142857145]);
-ylabel(h, 'Permeability [mD]');
+    [0.813404499329774 0.148514851485148 0.02033633196607 0.731023102310231]);
+% h = colorbar
+ylabel(h, 'Permeability [mD]', 'fontsize', 14);
+caxis([15 31])
