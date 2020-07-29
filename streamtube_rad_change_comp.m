@@ -4,7 +4,7 @@
 % This code is for analyzing the December PET imbibition experiment
 clear all
 % close all
-set(0,'DefaultAxesFontSize',15, 'defaultlinelinewidth', 1.1,...
+set(0,'DefaultAxesFontSize',17, 'defaultlinelinewidth', 1.1,...
     'DefaultAxesTitleFontWeight', 'normal')
 
 % adjust paths depending on computer
@@ -46,8 +46,9 @@ DM = (M0(:,:,t2)-M0(:,:,t1))./M0(:,:,t1).*100;
 % DM(DM==0)=nan;
 
 % plot measured change
-figure('position', [214   313   787   565])
-s1 = subplot(2,2,1);
+% figure('position', [214   313   787   565])
+figure('position', [203         558        1715         420])
+s1 = subplot(1,3,1);
 h1 = imagesc(DM);
 title(['Change in radioactivity [%]'])
 axis equal
@@ -61,7 +62,7 @@ caxis([-50 150])
 
 
 % plot flux-calculate change
-subplot(2,2,2)
+subplot(1,3,2)
 mean_perm = nanmean(Kmd_mat(2:end-1, 2:end-1,:),3);
 % standard error
 std_err = nanstd(Kmd_mat(2:end-1, 2:end-1,:),0, 3)./sqrt(5);
@@ -85,7 +86,7 @@ plot([10.5 9.5], [0.5 0.5], 'r', 'linewidth', 1)
 plot([10.5 9.5], [20.5 20.5], 'r', 'linewidth', 1) 
 
 %% Crossplot
-subplot(2,2,[3:4])
+subplot(1,3,3)
 scatter(mean_perm(:), DM(:), std_err(:).*80, 'k')
 hold on
 % plot([31.1446-std_err(160)/2 31.1446+std_err(160)/2], [20 20])
@@ -111,20 +112,20 @@ xreg = linspace(min(xdata), max(xdata), 100);
 % yCalc1 = X*b;
 
 % nonlinear regression
-p = polyfit(xdata,ydata,2);
-yreg = polyval(p, xreg);
-plot(xreg, yreg, ':r', 'linewidth', 2)
-yCalc1 = polyval(p, xdata);
-
-% r^2 coefficient of determination (see wiki page for details)
-% fit_data = 
-residuals = (ydata - yCalc1);
-% The sum of squares of residuals, also called the residual sum of squares
-ssres = sum(residuals.^2);
-% The total sum of squares (proportional to the variance of the data):
-sstot = sum((ydata- mean(ydata)).^2);
-% coefficient of determination
-R2 = 1- (ssres/sstot)
+% p = polyfit(xdata,ydata,2);
+% yreg = polyval(p, xreg);
+% plot(xreg, yreg, ':r', 'linewidth', 2)
+% yCalc1 = polyval(p, xdata);
+% 
+% % r^2 coefficient of determination (see wiki page for details)
+% % fit_data = 
+% residuals = (ydata - yCalc1);
+% % The sum of squares of residuals, also called the residual sum of squares
+% ssres = sum(residuals.^2);
+% % The total sum of squares (proportional to the variance of the data):
+% sstot = sum((ydata- mean(ydata)).^2);
+% % coefficient of determination
+% R2 = 1- (ssres/sstot)
 
 
 axis([15 32 -50 155])

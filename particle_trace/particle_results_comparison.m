@@ -26,17 +26,19 @@ gcc = cbrewer('seq', 'YlOrRd', 9 , 'linear');
 
 %% Load perm data
 load('streamtube_perm_field')
-load('100_particles_SS_stream_perm_start_w_diff_2e10_fixed_bc')
+% load('100_particles_SS_stream_perm_start_w_diff_2e10_fixed_bc')
+load('100_particles_SS_stream_perm_start_w_diff_7e10_advect')
 
 % Visual check that velocity vectors appear correct
-figure('position', [629   318   818   606])
-subplot(2,1,1)
+% figure('position', [629   318   818   606])
+figure
+subplot(1,2,1)
 gridX = [1:Grid.nx].*Grid.dx - (Grid.dx/2);
 gridY = [1:Grid.ny].*Grid.dy - (Grid.dy/2);
 imagesc([0 10], gridY.*100, perm_profile_md)
 colormap(gray)
 caxis([15 31])
-% xlabel('Distance from inlet [cm]')
+xlabel('Distance from inlet [cm]')
 title('Single phase injection')
 axis equal
 axis tight
@@ -58,8 +60,9 @@ for i = 1:P.total_particles
 end
 
 % Now plot imbibition data
-load('100_imbibe_particles_frame_76_start_rand_dist_w_diff1e12_t150x')
-subplot(2,1,2)
+% load('100_imbibe_particles_frame_76_start_rand_dist_w_diff1e12_t150x')
+load('100_imbibe_particles_frame_76_start_rand_dist_w_diff1e12_advect')
+subplot(1,2,2)
 imagesc([0 10], gridY.*100, perm_profile_md)
 colormap(gray)
 title('Spontaneous imbibition')
@@ -84,8 +87,8 @@ for i = 1:P.total_particles
 end
 
 
-h = colorbar('Position',...
-    [0.813404499329774 0.148514851485148 0.02033633196607 0.731023102310231]);
-% h = colorbar
+% h = colorbar('Position',...
+%     [0.813404499329774 0.148514851485148 0.02033633196607 0.731023102310231]);
+h = colorbar
 ylabel(h, 'Permeability [mD]', 'fontsize', 14);
 caxis([15 31])
