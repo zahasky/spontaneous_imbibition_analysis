@@ -6,7 +6,7 @@ clear all
 close all
 
 % set a few new plot defaults
-set(0,'DefaultAxesFontSize',16, 'defaultlinelinewidth', 2,...
+set(0,'DefaultAxesFontSize',14, 'defaultlinelinewidth', 2,...
     'DefaultAxesTitleFontWeight', 'normal')
 
 % colorbrewer setup for better colors
@@ -30,7 +30,7 @@ load('100_particles_SS_stream_perm_1e10_advect')
 
 % Visual check that velocity vectors appear correct
 % figure('position', [629   318   818   606])
-figure('position', [60         486        1593         323])
+figure
 subplot(1,2,1)
 gridX = [1:Grid.nx].*Grid.dx - (Grid.dx/2);
 gridY = [1:Grid.ny].*Grid.dy - (Grid.dy/2);
@@ -59,6 +59,7 @@ for i = 1:P.total_particles
 end
 
 % Now plot imbibition data
+% load('100_imbibe_particles_frame_76_start_rand_dist_w_diff1e12_t150x')
 load('100_imbibe_particles_frame_46_start_rand_dist_w_diff_2e12')
 subplot(1,2,2)
 imagesc([0 10], gridY.*100, perm_profile_md)

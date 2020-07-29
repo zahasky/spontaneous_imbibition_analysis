@@ -14,7 +14,7 @@ str_index = strfind(pwd, '\Dropbox');
 % Path to colorbrewer
 addpath([current_folder(1:str_index),'Dropbox\Matlab\high_res_images'])
 flux_cc = flipud(cbrewer('div', 'RdYlBu', 100 , 'linear'));
-% perm_cc = flipud(cbrewer('div', 'RdYlBu', 100 , 'linear'));
+scc = cbrewer('seq', 'Purples', 7 , 'linear');
 
 % Load PET data
 load('SI_concat_PET_4D_22x22')
@@ -32,7 +32,9 @@ pet_size = size(PET_matrix_sat);
 
 % times between which change in radioactivity will be measured
 t1 = 10;
-t2 = 74;
+t2 = 19;
+t3 = 36;
+t4 = 74;
 
 vox_size = [0.2329 0.2329 0.2388];
 
@@ -41,28 +43,54 @@ vox_size = [0.2329 0.2329 0.2388];
 [M0, Xc, Sx]= streamtube_moment_calc_function(PET_matrix, vox_size(3));
 
 % Calculate zero moment difference in each streamtube
-DM = (M0(:,:,t2)-M0(:,:,t1))./M0(:,:,t1).*100;
-% DM = streamtube_norm_diff./(T(t2)-T(t1));
+DM1 = (M0(:,:,t2)-M0(:,:,t1))./M0(:,:,t1).*100;
+DM2 = (M0(:,:,t3)-M0(:,:,t1))./M0(:,:,t1).*100;
+DM3 = (M0(:,:,t4)-M0(:,:,t1))./M0(:,:,t1).*100;
 % DM(DM==0)=nan;
 
 % plot measured change
-% figure('position', [214   313   787   565])
-figure('position', [203         558        1715         420])
-s1 = subplot(1,3,1);
-h1 = imagesc(DM);
-title(['Change in radioactivity [%]'])
+figure('position', [214   313   787   565])
+% figure('position', [203         558        1715         420])
+s1 = subplot(3,2,1);
+h1 = imagesc(DM1);
+title(['PV 0.16 to 0.25'])
 axis equal
 axis tight
 axis off
 shading flat
-colorbar('fontsize', 15)
+% colorbar('fontsize', 15)
 colormap(gca, flux_cc)
-set(h1,'alphadata',~isnan(DM))
+set(h1,'alphadata',~isnan(DM1))
+caxis([-50 150])
+
+s1 = subplot(3,2,3);
+h1 = imagesc(DM2);
+title(['PV 0.16 to 0.40'])
+axis equal
+axis tight
+axis off
+shading flat
+y1 = colorbar('fontsize', 15);
+colormap(gca, flux_cc)
+set(h1,'alphadata',~isnan(DM1))
+caxis([-50 150])
+ylabel(y1, 'Change in radioactivity [%]', 'fontsize', 16);
+
+s1 = subplot(3,2,5);
+h1 = imagesc(DM3);
+title(['PV 0.16 to 0.57'])
+axis equal
+axis tight
+axis off
+shading flat
+% colorbar('fontsize', 15)
+colormap(gca, flux_cc)
+set(h1,'alphadata',~isnan(DM1))
 caxis([-50 150])
 
 
 % plot flux-calculate change
-subplot(1,3,2)
+hg = subplot(3,2,2)
 mean_perm = nanmean(Kmd_mat(2:end-1, 2:end-1,:),3);
 % standard error
 std_err = nanstd(Kmd_mat(2:end-1, 2:end-1,:),0, 3)./sqrt(5);
@@ -75,7 +103,7 @@ shading flat
 colorbar('fontsize', 15);
 caxis([15  32])
 
-set(h2,'alphadata',~isnan(DM))
+set(h2,'alphadata',~isnan(DM1))
 colormap(gca, gray)
 % ylabel(y1, 'Permeability [mD]');
 hold on
@@ -85,24 +113,29 @@ plot([9.5 9.5], [0.5 20.5], 'r', 'linewidth', 1)
 plot([10.5 9.5], [0.5 0.5], 'r', 'linewidth', 1) 
 plot([10.5 9.5], [20.5 20.5], 'r', 'linewidth', 1) 
 
+pos1 = get(hg, 'Position')
+new_pos1 = pos1 +[-0.04 -0.09 0 0.07]
+set(hg, 'Position',new_pos1 )
+
 %% Crossplot
-subplot(1,3,3)
-scatter(mean_perm(:), DM(:), std_err(:).*80, 'k')
+h1 = subplot(3,2,[4,6])
+% scatter(mean_perm(:), DM1(:), std_err(:).*80, 'MarkerEdgeColor', scc(3,:))
 hold on
-% plot([31.1446-std_err(160)/2 31.1446+std_err(160)/2], [20 20])
-
-% Linear regression
-xdata = mean_perm(:);
-ydata = DM(:);
-% remove potential nans
-xdata(isnan(ydata))=[];
-ydata(isnan(ydata))=[];
-
-X = [ones(length(xdata),1) xdata];
-% b(2) is the slope and b(1) is the intercept
-b = X\ydata;
-% sythenthic vector of x-values for plotting regression results
-xreg = linspace(min(xdata), max(xdata), 100);
+% scatter(mean_perm(:), DM2(:), std_err(:).*80, 'MarkerEdgeColor', scc(5,:))
+% scatter(mean_perm(:), DM3(:), std_err(:).*80, 'MarkerEdgeColor', scc(7,:))
+scatter(mean_perm(:), DM3(:), std_err(:).*80, 'k')
+% % Linear regression
+% xdata = mean_perm(:);
+% ydata = DM(:);
+% % remove potential nans
+% xdata(isnan(ydata))=[];
+% ydata(isnan(ydata))=[];
+% 
+% X = [ones(length(xdata),1) xdata];
+% % b(2) is the slope and b(1) is the intercept
+% b = X\ydata;
+% % sythenthic vector of x-values for plotting regression results
+% xreg = linspace(min(xdata), max(xdata), 100);
 % Plot when regression intercept is not equal to o
 % plot(xreg, xreg.*b(2)+b(1), ':r', 'linewidth', 2)
 % Plot when regression intercept is equal to 0
