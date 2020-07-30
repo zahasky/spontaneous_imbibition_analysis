@@ -84,9 +84,6 @@ for i = 1:P.total_particles
     
 end
 
-
-% h = colorbar('Position',...
-%     [0.813404499329774 0.148514851485148 0.02033633196607 0.731023102310231]);
 h = colorbar
 ylabel(h, 'Permeability [mD]', 'fontsize', 14);
 caxis([15 31])
