@@ -4,7 +4,7 @@
 % This code is for analyzing the December PET imbibition experiment
 clear all
 % close all
-set(0,'DefaultAxesFontSize',17, 'defaultlinelinewidth', 1.1,...
+set(0,'DefaultAxesFontSize',16, 'defaultlinelinewidth', 1.1,...
     'DefaultAxesTitleFontWeight', 'normal')
 
 % adjust paths depending on computer
@@ -15,6 +15,8 @@ str_index = strfind(pwd, '\Dropbox');
 addpath([current_folder(1:str_index),'Dropbox\Matlab\high_res_images'])
 flux_cc = flipud(cbrewer('div', 'RdYlBu', 100 , 'linear'));
 scc = cbrewer('seq', 'Purples', 7 , 'linear');
+% permeability
+gray_map = [1 1 1; (cbrewer('seq', 'Greys', (100) , 'linear'))];
 
 % Load PET data
 load('SI_concat_PET_4D_22x22')
@@ -70,11 +72,11 @@ axis equal
 axis tight
 axis off
 shading flat
-y1 = colorbar('fontsize', 15);
+y1 = colorbar;
 colormap(gca, flux_cc)
 set(h1,'alphadata',~isnan(DM1))
 caxis([-50 150])
-ylabel(y1, 'Change in radioactivity [%]', 'fontsize', 16);
+ylabel(y1, 'Change in radioactivity [%]');
 
 s1 = subplot(3,2,5);
 h1 = imagesc(DM3);
@@ -83,7 +85,7 @@ axis equal
 axis tight
 axis off
 shading flat
-% colorbar('fontsize', 15)
+% colorbar('fontsize', 16)
 colormap(gca, flux_cc)
 set(h1,'alphadata',~isnan(DM1))
 caxis([-50 150])
@@ -100,12 +102,11 @@ axis equal
 axis tight
 axis off
 shading flat
-colorbar('fontsize', 15);
-caxis([15  32])
+% colorbar('fontsize', 15);
+caxis([10  32])
 
 set(h2,'alphadata',~isnan(DM1))
-colormap(gca, gray)
-% ylabel(y1, 'Permeability [mD]');
+colormap(gca, gray_map)
 hold on
 % draw box around area of interest
 plot([10.5 10.5], [0.5 20.5], 'r', 'linewidth', 1) 
