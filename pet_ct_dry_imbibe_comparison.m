@@ -5,10 +5,13 @@ clear all
 close all
 set(0,'DefaultAxesFontSize',14, 'defaultlinelinewidth', 0.5,...
     'DefaultAxesTitleFontWeight', 'normal')
+
+% NOTE that this script requires the PATCH_3Darray function from the Matlab
+% file exchange: https://www.mathworks.com/matlabcentral/fileexchange/28497-plot-a-3d-array-using-patch
+
 % adjust paths depending on computer
 current_folder = pwd;
 str_index = strfind(pwd, '\Dropbox');
-
 % Path to colorbrewer maps and PATCH_3Darray
 addpath([current_folder(1:str_index),'Dropbox\Matlab\high_res_images'])
 
@@ -103,8 +106,6 @@ for i=[10,20,34,54]
     slice_plane = permute(slice_plane,[3 2 1]);
     
     PATCH_3Darray(slice_plane, gridZ, gridY, gridX, sat_blue, satlim, 'col')
-    %     title(['Imbibition time ', num2str(round(tt(nn))), ' minutes'], 'FontWeight', 'Normal')
-    % title('Water saturation')
     axis([0 max(gridZ) 0 max(gridY) 0 max(gridX)])
     grid on
     axis equal

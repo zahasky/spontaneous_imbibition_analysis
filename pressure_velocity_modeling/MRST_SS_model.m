@@ -7,6 +7,10 @@ close all
 % formating standards
 set(0,'DefaultAxesFontSize',14, 'defaultlinelinewidth', 2,...
     'DefaultAxesTitleFontWeight', 'normal')
+
+% NOTE that this script requires both colorbrewer: https://www.mathworks.com/matlabcentral/fileexchange/34087-cbrewer-colorbrewer-schemes-for-matlab
+% and the Matlab reservoir simulation toolbox: https://www.sintef.no/projectweb/mrst/download/
+
 % add path to MRST codes
 addpath('C:\Users\zahas\Dropbox\Matlab\MRST_2020a\mrst-2020a')
 % % run startup
